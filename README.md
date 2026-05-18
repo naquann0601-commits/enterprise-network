@@ -10,7 +10,6 @@ Dự án này mô phỏng và triển khai kiến trúc mạng doanh nghiệp hi
 - **DMZ (Demilitarized Zone)** cho các dịch vụ công khai như:
   - Web Server
   - DNS Server
-  - Mail Server
 - **Quản trị tập trung (Management Network)**
 - **Khả năng mở rộng linh hoạt** cho doanh nghiệp
 
@@ -44,8 +43,6 @@ Chức năng:
 
 - NAT/PAT
 - ACL Security Policies
-- VPN
-- IDS/IPS
 - Load balancing/failover
 - Kiểm soát truy cập giữa:
   - Internet ↔ DMZ
@@ -60,7 +57,6 @@ Chứa:
 
 - Web Server
 - DNS Server
-- Mail Server
 
 Ưu điểm:
 
@@ -129,9 +125,7 @@ Mỗi switch phục vụ một phòng ban riêng.
 - DMZ Isolation
 - VLAN Segmentation
 - Access Control Lists
-- Port Security
-- DHCP Snooping
-- Dynamic ARP Inspection
+
 
 ### Dự phòng
 
@@ -143,12 +137,6 @@ Mỗi switch phục vụ một phòng ban riêng.
 - Spanning Tree Protocol
 - HSRP/VRRP Gateway Redundancy
 
-### Quản trị
-
-- VLAN riêng cho quản trị
-- SSH/SNMP/Syslog
-- Centralized Monitoring
-- Backup Configuration
 
 ---
 
@@ -175,7 +163,6 @@ Mỗi switch phục vụ một phòng ban riêng.
 - Linux/Windows Server
 - Web: Apache/Nginx
 - DNS: Bind9
-- Mail: Postfix
 
 ---
 
@@ -198,7 +185,6 @@ Mỗi switch phục vụ một phòng ban riêng.
 - Kiểm tra failover ISP
 - NAT Internet Access
 - Public Web từ DMZ
-- Mail Service
 - DNS Resolution
 - Firewall ACL
 - STP Redundancy
@@ -212,8 +198,6 @@ Mỗi switch phục vụ một phòng ban riêng.
 - VMware / Proxmox
 - FortiGate / pfSense
 - Ubuntu Server / Windows Server
-- Wireshark
-- Zabbix / PRTG Monitoring
 
 ---
 
@@ -230,7 +214,6 @@ project/
 │── server/
 │   ├── web/
 │   ├── dns/
-│   ├── mail/
 │── docs/
 │   ├── ip-plan.md
 │   ├── security-policy.md
