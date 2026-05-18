@@ -1,4 +1,4 @@
-# Hệ thống mạng doanh nghiệp đa tầng với DMZ, Firewall HA và phân chia VLAN
+# Hệ thống mạng doanh nghiệp đa tầng với DMZ, Firewall HA
 
 ## Giới thiệu dự án
 
@@ -9,7 +9,6 @@ Dự án này mô phỏng và triển khai kiến trúc mạng doanh nghiệp hi
 - **Phân vùng mạng nội bộ** bằng VLAN cho từng phòng ban
 - **DMZ (Demilitarized Zone)** cho các dịch vụ công khai như:
   - Web Server
-  - DNS Server
 - **Quản trị tập trung (Management Network)**
 - **Khả năng mở rộng linh hoạt** cho doanh nghiệp
 
@@ -27,20 +26,20 @@ Dự án này mô phỏng và triển khai kiến trúc mạng doanh nghiệp hi
 
 - **ISP-1** → Router R1 → Firewall FW-1
 - **ISP-2** → Router R2 → Firewall FW-2
-- Hai đường truyền giúp:
-  - Dự phòng khi một ISP gặp sự cố
-  - Cân bằng tải
-  - Tăng độ ổn định
+
+**Mục tiêu:**
+- Dự phòng kết nối Internet
+- Tăng tính sẵn sàng hệ thống
+- Hỗ trợ failover khi xảy ra sự cố WAN
 
 ### 2. Firewall Layer
 
 Bao gồm:
 
-- **FW-1**
-- **FW-2**
+- **FW-1**: Active
+- **FW-2**: Backup
 
-Chức năng:
-
+**Chức năng:**
 - NAT/PAT
 - ACL Security Policies
 - Load balancing/failover
@@ -50,19 +49,19 @@ Chức năng:
   - Internal VLAN ↔ VLAN
 
 ### 3. DMZ Zone
-
-**VLAN 99: 172.16.10.0/24**
-
-Chứa:
-
+**Thành phần:**
 - Web Server
-- DNS Server
+- DMZ Switch
 
-Ưu điểm:
+**Vai trò:**
+- Cung cấp dịch vụ web công cộng
+- Tách biệt với mạng LAN nội bộ
+- Giảm nguy cơ tấn công trực tiếp vào hệ thống nội bộ
 
-- Cách ly khỏi mạng nội bộ
-- Tăng bảo mật
-- Cho phép truy cập công khai an toàn
+**Chính sách:**
+- Internet → Web Server: Cho phép HTTP/HTTPS
+- DMZ → LAN: Hạn chế tối đa
+- LAN → DMZ: Kiểm soát theo ACL
 
 ### 4. Core Distribution Layer
 
@@ -76,6 +75,7 @@ Vai trò:
 - Redundancy
 - Trunking xuống Access Switches
 - STP / HSRP / VRRP
+- DHCP 
 
 ### 5. Access Layer
 
@@ -83,7 +83,10 @@ Bao gồm:
 
 - ASW-1 đến ASW-6
 
-Mỗi switch phục vụ một phòng ban riêng.
+**Vai trò:**
+- Kết nối người dùng đầu cuối
+- Access VLAN cho từng phòng ban
+- Uplink trunk tới Distribution Switch
 
 ---
 
@@ -116,123 +119,54 @@ Mỗi switch phục vụ một phòng ban riêng.
 
 ---
 
-## Tính năng nổi bật
-
-### Bảo mật
-
-- Firewall Rules
-- NAT/PAT
-- DMZ Isolation
-- VLAN Segmentation
-- Access Control Lists
-
-
-### Dự phòng
-
-- Dual ISP
-- Dual Router
-- Dual Firewall
-- Dual Distribution Switch
-- Link Aggregation
-- Spanning Tree Protocol
-- HSRP/VRRP Gateway Redundancy
-
-
----
-
-## Thiết bị sử dụng
-
-### Router
-
-- Cisco IOL
-
-### Firewall
-
-- FortiGate 
-
-### Switch Distribution
-
-- Cisco Layer 3 Switch
-
-### Switch Access
-
-- Cisco Layer 2 Switch
-
-### Server
-
-- Linux/Windows Server
-- Web: Apache/Nginx
-- DNS: Bind9
-
----
-
-## Mục tiêu triển khai
-
-- Xây dựng hệ thống mạng doanh nghiệp thực tế
-- Tăng cường bảo mật
-- Đảm bảo hoạt động liên tục
-- Phân tách rõ ràng các phòng ban
-- Hỗ trợ mở rộng lâu dài
-- Phục vụ đào tạo, nghiên cứu hoặc triển khai thực tế
-
----
-
 ## Kiểm thử hệ thống
 
 ### Các bài test đã thực hiện:
 
-- Ping giữa các VLAN theo policy
-- Kiểm tra failover ISP
-- NAT Internet Access
-- Public Web từ DMZ
-- DNS Resolution
-- Firewall ACL
-- STP Redundancy
-- DHCP theo VLAN
+- [x] **Ping giữa các VLAN**
+
+**ping VLAN 10 ➜ VLAN 40**
+
+![Ping VLAN](screenshots/ping_VLAN10_den_VLAN40.png)
+
+**PC-12 ping default gateway**
+
+![Ping](screenshots/PC_VLAN60_PING_DEFAULT_GATEWAY.png)
 
 ---
 
-## Công nghệ đề xuất
+- [x] **Truy cập Web Server DMZ**
 
-- Cisco Packet Tracer / GNS3 / EVE-NG
-- VMware / Proxmox
-- FortiGate / pfSense
-- Ubuntu Server / Windows Server
+![Web Server](screenshots/truy_cap_web_server_tu_may_noi_bo.png)
 
 ---
 
-## Cấu trúc thư mục gợi ý
+- [x] **Failover Firewall**
 
-```bash
-project/
-│── configs/
-│   ├── routers/
-│   ├── firewalls/
-│   ├── switches/
-│── diagrams/
-│   └── topology.png
-│── server/
-│   ├── web/
-│   ├── dns/
-│── docs/
-│   ├── ip-plan.md
-│   ├── security-policy.md
-│── README.md
-```
+**Trạng thái HA**
+
+![HA](screenshots/firewall-ha-status.png)
+
+**Sau khi Primary Down**
+
+![Firewall Failover](screenshots/firewall-failover.png)
 
 ---
 
-## Hướng phát triển tương lai
+- [x] ACL Security
 
-- SD-WAN
-- NAC (Network Access Control)
-- SIEM Monitoring
-- Cloud Integration
-- Zero Trust Security
-- Multi-factor Authentication
-- Load Balancer
-- Server Clustering
+**Chặn VLAN 10 ping VLAN 40**
 
+![block_vlan10_to_vlan40](screenshots/block_vlan10_to_vlan40.png)
 
+**Lưu lượng từ VLAN 60 được phép kết nối tới các phân vùng**
 
+![vlan60_ping_all_zones_success.png](screenshots/vlan60_ping_all_zones_success.png)
+
+---
+
+- [x] DHCP cấp IP
+
+![DHCP](screenshots/dhcp-client-ip.png)
+---
 
