@@ -1,4 +1,4 @@
-# Hệ thống mạng doanh nghiệp đa tầng với DMZ, Firewall HA
+# Enterprise Network Infrastructure with Dual Firewall & DMZ Security
 
 ## Giới thiệu dự án
 
