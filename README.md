@@ -155,7 +155,7 @@ Bao gồm:
 
 - [x] ACL Security
 
-**Chặn VLAN 10 ping VLAN 40**
+**Ngăn chặn lưu lượng ICMP (ping) từ VLAN 10 đến VLAN 40**
 
 ![block_vlan10_to_vlan40](screenshots/block_vlan10_to_vlan40.png)
 
@@ -165,7 +165,7 @@ Bao gồm:
 
 ---
 
-- [x] DHCP cấp IP
+- [x] DHCP cấp phát IP cho máy nội bộ
 
 ![DHCP](screenshots/dhcp-client-ip.png)
 ---
