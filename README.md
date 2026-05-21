@@ -74,7 +74,7 @@ Vai trò:
 - Inter-VLAN Routing
 - Redundancy
 - Trunking xuống Access Switches
-- STP / HSRP / VRRP
+- HSRP 
 - DHCP 
 
 ### 5. Access Layer
